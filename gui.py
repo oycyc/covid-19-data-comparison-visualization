@@ -13,7 +13,7 @@ canvas = tk.Canvas(window, width=600, height= 300)
 canvas.grid(columnspan=3, rowspan=3)
 
 # image
-virus_sprite = ImageTk.PhotoImage(Image.open("covid.png"))
+virus_sprite = ImageTk.PhotoImage(Image.open("newnew.gif"), format="gif -index 500")
 virus_label = tk.Label(image=virus_sprite)
 virus_label.image = virus_sprite
 virus_label.grid(column=1, row=0)
