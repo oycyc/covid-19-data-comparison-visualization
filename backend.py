@@ -34,15 +34,12 @@ def createFolder(chartType):
 def createDF(dataType):
     # argument ex: 'cumulative' 'rolling' hence .upper()
     # create df variable name 'cumulative_df' or 'rolling_df'
-    if (dataType + "_df") in globals():
-        print(f"{dataType} df already exists.")
-    else:
+    if (dataType + "_df") not in globals():
         globals()[f"{dataType}_df"] = pd.read_csv(
                                         globals()[f"{dataType.upper()}_DATA"])
         # make all dates into datetime (for graphing)
         df_variable = globals()[f"{dataType}_df"] 
         df_variable["date"] = pd.to_datetime(df_variable["date"])      
-        print(f"{dataType} df created.")
 
 def getCumulativeCases(state):
     createDF("cumulative")
@@ -94,7 +91,7 @@ def lineChart(dataframe1, dataframe2, states, metric, animated):
                 plt.plot(dataframe1["date"][:i], dataframe1[dataType][:i], colors[0])
                 plt.plot(dataframe2["date"][:i], dataframe2[dataType][:i], colors[1])
                 plt.legend(states, loc="upper left")
-                print(i)
+                print("{:.2%}".format(i / (len(dataframe1)+75)))
                 
         # save_count has +75 frames to give ending time, if no end time then use +1 (.index)   
         animator = FuncAnimation(fig, animate, repeat=False, interval=5, save_count=dataPoints + 75)
@@ -134,6 +131,7 @@ def pieChart(dataframe1, dataframe2, states, metric, animated):
                     ax.set_title(metric + f"\n{dataframe1.iloc[i]['date'].strftime('%B, %Y')}", fontdict=titleFont)
                 except (ValueError, KeyError) as e: # animation continues for 75 more frames to give extra time, so stop it
                     animator.event_source.stop()
+                print("{:.2%}".format(i / (len(dataframe1)+75)))
             
         animator = FuncAnimation(fig, animate, interval=1, save_count=len(dataframe1) + 75)
         animator.save(f"{createFolder('pie_chart')}/{states[0].replace(' ', '')}Vs{states[1].replace(' ', '')}_{metric.replace(' ', '')}.gif", writer=PillowWriter(fps=30))
@@ -185,6 +183,7 @@ def barChart(dataframe1, dataframe2, states, metric, animated):
                     plt.xticks(position, states)
                 except (ValueError, KeyError) as e: # animation continues for 75 more frames to give extra time, so stop it
                     animator.event_source.stop()
+                print("{:.2%}".format(i / (len(dataframe1)+75)))
                     
         animator = FuncAnimation(fig, animate, interval=1, save_count=len(dataframe1) + 75) # save_count=len(dataframe1) + 75
         animator.save(f"{createFolder('bar_chart')}/{states[0].replace(' ', '')}Vs{states[1].replace(' ', '')}_{metric.replace(' ', '')}.gif", writer=PillowWriter(fps=30))

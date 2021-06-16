@@ -10,7 +10,7 @@ def generateGraphBtn():
     chartInput = chartCombobox.get()
     animationInput = animationCombobox.get()
 
-    errorMessage = "Be sure to select from the available options -- the following options are incorrect:\n\n"
+    errorMessage = "Be sure to select from the available options -- the following options are missing/incorrect:\n\n"
     originalErrorLen = len(errorMessage)
     if (not state1Input) or (state1Input not in STATES): errorMessage += "State 1\n"
     if (not state2Input) or (state2Input not in STATES): errorMessage += "State 2\n"
