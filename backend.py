@@ -1,6 +1,5 @@
 from matplotlib import pyplot as plt
 from matplotlib.animation import FuncAnimation, PillowWriter
-from PIL import Image
 import pandas as pd
 import datetime
 import os
@@ -68,10 +67,6 @@ def getDailyDeaths(state):
     deaths_df = rolling_df[(rolling_df["state"] == state) & (rolling_df["deaths_avg"] >= 0)]\
                                     [["date", "deaths_avg"]]
     return deaths_df.reset_index().drop("index", axis=1) # remove old indexing, use new starting from 0
-
-#class Graph:
-#    def __init__(self, dataframe1, dataframe2, states, metric, animated):
-        
 
 def lineChart(dataframe1, dataframe2, states, metric, animated):
     # make dates start same 
@@ -216,7 +211,3 @@ inputOptions = {1 : lineChart,
                 3 : barChart}
 
 createDF("cumulative")
-
-
-
-
