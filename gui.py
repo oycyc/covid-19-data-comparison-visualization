@@ -41,7 +41,7 @@ ANIMATED_OPTIONS = ["", "Animated (Saved as .gif)", "No Animation (Image as .png
 window = Tk()
 window.geometry("820x500")
 window.configure(bg = "#FFFFFF")
-window.title("COVID-19 Data Comparison Visualization")
+window.title("COVID-19 Comparison Graph Generator")
 icon = PhotoImage(file = "assets/virus_icon.png")
 window.iconphoto(True, icon)
 
@@ -62,14 +62,14 @@ background = canvas.create_image(
 
 canvas.create_text( # center, bold doesn't work, try different method
     410.0, 45.0,
-    text = "COVID-19 Data Comparison Visualization",
+    text = "COVID-19 Comparison Graph Generator",
     fill = "#30882d",
     font = ("Georgia", 24, "underline"),
     justify = "center")
 
 canvas.create_text( 
     409.0, 103.0,
-    text = "Enter two states and choose from the following options \nto generate a graph. The graph will be automatically \ndownloaded and pop up on a new screen.",
+    text = "Enter two states and choose from the following options \nto generate a graph. The graph will be automatically \ndownloaded into the \"graphs\" folder.",
     fill = "#000000",
     font = ("Georgia", 14),
     justify = "center")

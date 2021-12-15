@@ -1,0 +1,4 @@
+- generating the graphs w/ random colorsletting the users choose the colors
+- allow more state inputs (instead of just the 2 limit right now)
+- organize & cleaning the code (refactor the charting functions into classes)
+- progress bar to let the user know when their animation will be finished

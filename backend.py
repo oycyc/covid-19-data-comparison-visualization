@@ -1,5 +1,6 @@
 from matplotlib import pyplot as plt
 from matplotlib.animation import FuncAnimation, PillowWriter
+from PIL import Image
 import pandas as pd
 import datetime
 import os
@@ -17,6 +18,11 @@ titleFont = {"family":"Georgia",
              "fontweight":"bold"}
 
 colors = ["#003f5c", "#ffa600"]
+
+
+def getCurrentTime():
+    # output hour_min-mm-dd-yy
+    return datetime.datetime.now().strftime("%H_%M-%m-%d-%y")
 
 def createOuterFolder():
     if not os.path.isdir("graphs"):
@@ -63,6 +69,9 @@ def getDailyDeaths(state):
                                     [["date", "deaths_avg"]]
     return deaths_df.reset_index().drop("index", axis=1) # remove old indexing, use new starting from 0
 
+#class Graph:
+#    def __init__(self, dataframe1, dataframe2, states, metric, animated):
+        
 
 def lineChart(dataframe1, dataframe2, states, metric, animated):
     # make dates start same 
@@ -95,13 +104,14 @@ def lineChart(dataframe1, dataframe2, states, metric, animated):
                 
         # save_count has +75 frames to give ending time, if no end time then use +1 (.index)   
         animator = FuncAnimation(fig, animate, repeat=False, interval=5, save_count=dataPoints + 75)
-        animator.save(f"{createFolder('line_chart')}/{states[0].replace(' ', '')}Vs{states[1].replace(' ', '')}_{metric.replace(' ', '')}.gif", writer=PillowWriter(fps=30))
+        animator.save(f"{createFolder('line_chart')}/{getCurrentTime()}{states[0].replace(' ', '')}Vs{states[1].replace(' ', '')}_{metric.replace(' ', '')}.gif", writer=PillowWriter(fps=30))
         return
     
     plt.plot(dataframe1["date"], dataframe1[dataType], colors[0])
     plt.plot(dataframe2["date"], dataframe2[dataType], colors[1])
     plt.legend(states, loc="upper left")
-    plt.savefig(f"{createFolder('line_chart')}/{states[0].replace(' ', '')}Vs{states[1].replace(' ', '')}_{metric}.png")
+    plt.savefig(f"{createFolder('line_chart')}/{getCurrentTime()}{states[0].replace(' ', '')}Vs{states[1].replace(' ', '')}_{metric}.png")
+
 
 def pieChart(dataframe1, dataframe2, states, metric, animated):
     # make dates start same 
@@ -134,7 +144,7 @@ def pieChart(dataframe1, dataframe2, states, metric, animated):
                 print("{:.2%}".format(i / (len(dataframe1)+75)))
             
         animator = FuncAnimation(fig, animate, interval=1, save_count=len(dataframe1) + 75)
-        animator.save(f"{createFolder('pie_chart')}/{states[0].replace(' ', '')}Vs{states[1].replace(' ', '')}_{metric.replace(' ', '')}.gif", writer=PillowWriter(fps=30))
+        animator.save(f"{createFolder('pie_chart')}/{getCurrentTime()}{states[0].replace(' ', '')}Vs{states[1].replace(' ', '')}_{metric.replace(' ', '')}.gif", writer=PillowWriter(fps=30))
         return # animation done, stop rest of function
 
     # later clean this part use variable instead of calling the df multiple times
@@ -148,7 +158,7 @@ def pieChart(dataframe1, dataframe2, states, metric, animated):
             shadow=True, startangle=90)
     ax.axis('equal')  
     ax.set_title(metric + f"\nAs of {dataframe1.iloc[-1]['date'].strftime('%B %d, %Y')}", fontdict=titleFont)
-    plt.savefig(f"{createFolder('pie_chart')}/{states[0].replace(' ', '')}Vs{states[1].replace(' ', '')}_{metric}.png")
+    plt.savefig(f"{createFolder('pie_chart')}/{getCurrentTime()}{states[0].replace(' ', '')}Vs{states[1].replace(' ', '')}_{metric}.png")
 
 def barChart(dataframe1, dataframe2, states, metric, animated):
     # make dates start same 
@@ -186,13 +196,13 @@ def barChart(dataframe1, dataframe2, states, metric, animated):
                 print("{:.2%}".format(i / (len(dataframe1)+75)))
                     
         animator = FuncAnimation(fig, animate, interval=1, save_count=len(dataframe1) + 75) # save_count=len(dataframe1) + 75
-        animator.save(f"{createFolder('bar_chart')}/{states[0].replace(' ', '')}Vs{states[1].replace(' ', '')}_{metric.replace(' ', '')}.gif", writer=PillowWriter(fps=30))
+        animator.save(f"{createFolder('bar_chart')}/{getCurrentTime()}{states[0].replace(' ', '')}Vs{states[1].replace(' ', '')}_{metric.replace(' ', '')}.gif", writer=PillowWriter(fps=30))
         return # animation done, stop rest of function
     
     data = [int(dataframe1.iloc[:,1][-1:]), int(dataframe2.iloc[:,1][-1:])]
     plt.bar(position, data, color=colors)
     plt.title(metric + f"\nAs of {dataframe1.iloc[-1]['date'].strftime('%B %d, %Y')}", fontdict=titleFont)
-    plt.savefig(f"{createFolder('bar_chart')}/{states[0].replace(' ', '')}Vs{states[1].replace(' ', '')}_{metric}.png")
+    plt.savefig(f"{createFolder('bar_chart')}/{getCurrentTime()}{states[0].replace(' ', '')}Vs{states[1].replace(' ', '')}_{metric}.png")
 
 # corresponds to the index of METRIC_TYPES from gui.py
 metricOptions = {1 : getCumulativeCases,
@@ -206,16 +216,6 @@ inputOptions = {1 : lineChart,
                 3 : barChart}
 
 createDF("cumulative")
-
-
-# scientific notation
-# ## https://learnui.design/tools/data-color-picker.html
-# random color (randomintnorep?) and let users choose
-# organize code in classes
-
-
-
-
 
 
 
