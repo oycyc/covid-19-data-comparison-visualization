@@ -23,6 +23,9 @@ def getCurrentTime():
     # output hour_min-mm-dd-yy
     return datetime.datetime.now().strftime("%H_%M-%m-%d-%y")
 
+def commaFormat(value):
+    return "{:,}".format(value)
+
 def createOuterFolder():
     if not os.path.isdir("graphs"):
         os.makedirs("graphs")
@@ -128,7 +131,7 @@ def pieChart(dataframe1, dataframe2, states, metric, animated):
                     total = int(dataframe1.iloc[:,1][i]) + int(dataframe2.iloc[:,1][i])
                     def numbering(percent):
                         val = int(round(percent*total/100.0))
-                        return val
+                        return commaFormat(val)
                     ax.clear()
                     sizes = [int(dataframe1.iloc[:,1][i]), int(dataframe2.iloc[:,1][i])]
                     ax.pie(sizes, explode=explode, labels=labels, autopct=numbering, shadow=True, startangle=90)
@@ -146,7 +149,7 @@ def pieChart(dataframe1, dataframe2, states, metric, animated):
     total = int(dataframe1.iloc[:,1][-1:]) + int(dataframe2.iloc[:,1][-1:])
     def numbering(percent):
         val = int(round(percent*total/100.0))
-        return val
+        return commaFormat(val)
     # selects last index
     sizes = [int(dataframe1.iloc[:,1][-1:]), int(dataframe2.iloc[:,1][-1:])]
     ax.pie(sizes, explode=explode, labels=labels, autopct=numbering,
